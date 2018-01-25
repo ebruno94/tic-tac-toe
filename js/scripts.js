@@ -7,9 +7,10 @@ var Game = {
   },
   playAgain: function(){
     this.setCurrentPlayer();
+    Board.win = false;
   },
   setPlayers: function(one, two){
-    this.players.push(Player1, Player2);
+    this.players.push(one, two);
   },
   setCurrentPlayer: function(){
     if (this.currentPlayer === Game.players[0]) {
@@ -44,38 +45,54 @@ var Player2 = {
 
 var Computer = {
   name: "Alexa",
-  icon: '',
+  iconUrl: 'img/vampire.png',
   setIcon: function(){},
-  chooseSquare: function(){}
+  chooseSquare: function(){
+    var randIndex = Math.floor(Math.random()*9);
+    var tempObject = Board.squares[randIndex];
+    if (tempObject.find("img").attr("src") !== undefined && tempObject.find("img").attr("src") !== '') {
+      console.log(randIndex);
+      console.log(tempObject);
+      Computer.chooseSquare();
+    } else {
+      tempObject.find("img").attr("src", Game.currentPlayer.iconUrl);
+      tempObject.find("img").toggleClass("hidden");
+    };
+
+  }
 };
 
 var Board = {
   squares: [],
+  activeSquare: undefined,
   win: false,
   setSquares: function(squaresArray){
     this.squares = squaresArray;
   },
   setWin: function(){
-    if (this.squares[0].attr("src") === Game.currentPlayer.iconUrl && this.squares[1].attr("src") === Game.currentPlayer.iconUrl && this.squares[2].attr("src") === Game.currentPlayer.iconUrl) {
+    if ( ((this.squares[0].find("img").attr("src") === Game.currentPlayer.iconUrl && this.squares[1].find("img").attr("src") === Game.currentPlayer.iconUrl && this.squares[2].find("img").attr("src") === Game.currentPlayer.iconUrl))
+    || ((this.squares[3].find("img").attr("src") === Game.currentPlayer.iconUrl && this.squares[4].find("img").attr("src") === Game.currentPlayer.iconUrl && this.squares[5].find("img").attr("src") === Game.currentPlayer.iconUrl))
+    || ((this.squares[6].find("img").attr("src") === Game.currentPlayer.iconUrl && this.squares[7].find("img").attr("src") === Game.currentPlayer.iconUrl && this.squares[8].find("img").attr("src") === Game.currentPlayer.iconUrl))
+    || ((this.squares[0].find("img").attr("src") === Game.currentPlayer.iconUrl && this.squares[3].find("img").attr("src") === Game.currentPlayer.iconUrl && this.squares[6].find("img").attr("src") === Game.currentPlayer.iconUrl))
+    || ((this.squares[1].find("img").attr("src") === Game.currentPlayer.iconUrl && this.squares[4].find("img").attr("src") === Game.currentPlayer.iconUrl && this.squares[7].find("img").attr("src") === Game.currentPlayer.iconUrl))
+    || ((this.squares[2].find("img").attr("src") === Game.currentPlayer.iconUrl && this.squares[5].find("img").attr("src") === Game.currentPlayer.iconUrl && this.squares[8].find("img").attr("src") === Game.currentPlayer.iconUrl))
+    || ((this.squares[0].find("img").attr("src") === Game.currentPlayer.iconUrl && this.squares[4].find("img").attr("src") === Game.currentPlayer.iconUrl && this.squares[8].find("img").attr("src") === Game.currentPlayer.iconUrl))
+    || ((this.squares[6].find("img").attr("src") === Game.currentPlayer.iconUrl && this.squares[4].find("img").attr("src") === Game.currentPlayer.iconUrl && this.squares[2].find("img").attr("src") === Game.currentPlayer.iconUrl)) ) {
       this.win = true;
+    };
+  },
+  setActiveSquare: function(activeSquare) {
+    this.activeSquare = activeSquare;
+  },
+  checkIfFilled: function() {
+    if (this.activeSquare.find("img").attr("src") !== undefined && this.activeSquare.find("img").attr("src") !== '') {
+      return true;
+    } else {
+      return false;
     };
   }
 };
-function Square() {
-  this.value = undefined;
-};
 
-Square.prototype.getValue = function(value) {
-  this.value = value;
-};
-
-Square.prototype.checkIfFilled = function() {
-  if ($(this).find("img").attr("src") !== undefined) {
-    return true;
-  } else {
-    return false;
-  };
-};
 
 $(document).ready(function(){
 
@@ -96,34 +113,60 @@ $(document).ready(function(){
       $("#setupFormContainer, #gameContainer").toggleClass("hidden");
       Game.startGame([$("#one"), $("#two"), $("#three"), $("#four"), $("#five"), $("#six"), $("#seven"), $("#eight"), $("#nine")]);
   });
+
   $("#buttonReset").click(function(){
     location.reload();
   });
+
   $("#playAgain").click(function(){
     Game.playAgain();
-    Board.squares.each(function(square) {
-      square.find("img").attr("src", undefined);
+    Board.squares.forEach(function(square) {
+      square.find("img").removeAttr("src");
+      $(".square img").addClass("hidden");
     });
-  });
-
-  $(".formImage").click(function() {
-    $(this).parent().find("input").attr("checked", "");
-  });
-
-  $(".col-md-4").click(function(){
-    if (!Square.prototype.checkIfFilled()) {
-      $(this).find("img").attr("src", Game.currentPlayer.iconUrl)
-    } else {
-      alert("Space Taken. Try again!")
-    };
-    Board.setWin();
-    if (Board.win) {
-      $("#winContainer").toggleClass("hidden");
-      $("#winner").text(Game.currentPlayer.name + " WINS!!!!");
-    } else {
+    $("#winContainer, .gameBoard, .resetRow").toggleClass("hidden");
+    if (Game.currentPlayer === Computer) {
+      Computer.chooseSquare();
+      Board.setWin();
+      if (Board.win) {
+        $("#winContainer, .gameBoard, .resetRow").toggleClass("hidden");
+        $("#winner").text(Game.currentPlayer.name + " WINS!!!!");
+      };
       Game.setCurrentPlayer();
       $("#activePlayer").text(Game.currentPlayer.name + "'s Turn");
     };
+  });
 
+  $(".radio .formImage").click(function() {
+    $(this).prev().attr("checked", true);
+  });
+
+  $(".col-md-4").click(function(){
+    Board.setActiveSquare($(this));
+    if (Board.checkIfFilled()) {
+      alert("Space Taken. Try again!");
+    } else {
+      $(this).find("img").attr("src", Game.currentPlayer.iconUrl);
+      $(this).find("img").toggleClass("hidden");
+      Board.setWin();
+      if (Board.win) {
+        $("#winContainer, .gameBoard, .resetRow").toggleClass("hidden");
+        $("#winner").text(Game.currentPlayer.name + " WINS!!!!");
+      } else {
+        Game.setCurrentPlayer();
+        $("#activePlayer").text(Game.currentPlayer.name + "'s Turn");
+        if (Game.currentPlayer.name === "Alexa") {
+          Computer.chooseSquare();
+          Board.setWin();
+          if (Board.win) {
+            $("#winContainer, .gameBoard, .resetRow").toggleClass("hidden");
+            $("#winner").text(Game.currentPlayer.name + " WINS!!!!");
+            Game.setCurrentPlayer(); 
+          };
+          Game.setCurrentPlayer();
+          $("#activePlayer").text(Game.currentPlayer.name + "'s Turn");
+        };
+      };
+    };
   });
 });
