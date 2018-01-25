@@ -1,0 +1,15 @@
+.formImage {
+  height: 75px;
+  width: 75px;
+}
+
+#gameContainer{
+  margin-left: 200px;
+  margin-right: 200px;
+}
+
+#gameContainer .col-md-4{
+  border: 4px solid black;
+  height: 200px;
+  width: 150px;
+}
