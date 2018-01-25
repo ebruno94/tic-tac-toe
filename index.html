@@ -14,7 +14,7 @@
     </div>
 
     <!-- GAME CONTAINER -->
-    <div class="container" id="gameContainer">
+    <div class="container hidden" id="gameContainer">
       <div class="row">
         <div class="col-md-12">
           <h2 id="activePlayer"></h2>
@@ -22,32 +22,32 @@
       </div>
       <!-- GAME BOARD -->
       <div class="row gameBoard">
-        <div class="col-md-4 square">
-          <p class="squareInput"></p>
+        <div class="col-md-4 square" id="one">
+          <img>
         </div>
-        <div class="col-md-4 square">
-          <p class="squareInput"></p>
+        <div class="col-md-4 square" id="two">
+          <img>
         </div>
-        <div class="col-md-4 square">
-          <p class="squareInput"></p>
+        <div class="col-md-4 square" id="three">
+          <img>
         </div>
-        <div class="col-md-4 square">
-          <p class="squareInput"></p>
+        <div class="col-md-4 square" id="four">
+          <img>
         </div>
-        <div class="col-md-4 square">
-          <p class="squareInput"></p>
+        <div class="col-md-4 square" id="five">
+          <img>
         </div>
-        <div class="col-md-4 square">
-          <p class="squareInput"></p>
+        <div class="col-md-4 square" id="six">
+          <img>
         </div>
-        <div class="col-md-4 square">
-          <p class="squareInput"></p>
+        <div class="col-md-4 square" id="seven">
+          <img>
         </div>
-        <div class="col-md-4 square">
-          <p class="squareInput"></p>
+        <div class="col-md-4 square" id="eight">
+          <img>
         </div>
-        <div class="col-md-4 square">
-          <p class="squareInput"></p>
+        <div class="col-md-4 square" id="nine">
+          <img>
         </div>
       </div>
 
@@ -59,7 +59,7 @@
       </div>
 
       <!-- WIN CONTAINER -->
-      <div class="row" id="winContainer">
+      <div class="row hidden" id="winContainer">
         <div class="col-md-12">
           <p id="winner"></p>
           <button type="button" class="btn" id="playAgain"> Play Again!</button>
@@ -88,14 +88,14 @@
       </div>
 
       <!-- FORM INPUT BLAH -->
-      <div class="row">
+      <div class="row hidden" id="setupFormContainer">
         <div class="col-md-12">
           <form id="setupForm">
             <div class="form-group pvp pvAI">
               <label for="player1Name">Player 1 Name</label>
               <input type="text" id="player1Name">
             </div>
-            <div class="form-group pvp">
+            <div class="form-group onlyPvp">
               <label for="player2Name">Player 2 Name</label>
               <input type="text" id="player2Name">
             </div>
@@ -168,8 +168,8 @@
                 </div>
               </div>
             </div>
-            <p>CHOOSE PLAYER 2 ICON!</p>
-            <div class="form-group pvp" id="player2Selection">
+            <p class="onlyPvp">CHOOSE PLAYER 2 ICON!</p>
+            <div class="form-group onlyPvp" id="player2Selection">
               <div class="row">
                 <div class="col-md-1">
                   <div class="radio">
@@ -238,7 +238,7 @@
               </div>
             </div>
 
-            <button type="submit" class="btn" id="startGame"> START GAME!</button>
+            <button type="submit" class="btn"> START GAME!</button>
           </form>
         </div>
       </div>
