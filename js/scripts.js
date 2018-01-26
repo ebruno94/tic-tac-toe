@@ -159,15 +159,17 @@ $(document).ready(function(){
         Game.setCurrentPlayer();
         $("#activePlayer").text(Game.currentPlayer.name + "'s Turn");
         if (Game.currentPlayer.name === "Alexa") {
-          Computer.chooseSquare();
-          Board.setWin();
-          if (Board.win) {
-            $("#winContainer, .gameBoard, .resetRow, #activePlayer").toggleClass("hidden");
-            $("#winner").text(Game.currentPlayer.name + " WINS!!!!");
+          setTimeout(function() {
+            Computer.chooseSquare();
+            Board.setWin();
+            if (Board.win) {
+              $("#winContainer, .gameBoard, .resetRow, #activePlayer").toggleClass("hidden");
+              $("#winner").text(Game.currentPlayer.name + " WINS!!!!");
+              Game.setCurrentPlayer();
+            };
             Game.setCurrentPlayer();
-          };
-          Game.setCurrentPlayer();
-          $("#activePlayer").text(Game.currentPlayer.name + "'s Turn");
+            $("#activePlayer").text(Game.currentPlayer.name + "'s Turn");
+          }, 1500);
         };
       };
     };

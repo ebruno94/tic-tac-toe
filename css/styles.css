@@ -74,6 +74,7 @@ p {
 #chooseModeP {
   text-align: center;
   font-size: 30px;
+  font-weight: bold;
 }
 
 #winner {
