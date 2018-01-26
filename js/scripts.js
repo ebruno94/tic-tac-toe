@@ -98,11 +98,12 @@ $(document).ready(function(){
 
   $("#pvp").click(function(){
     Game.setPlayers(Player1, Player2);
-    $("#setupFormContainer").toggleClass("hidden");
+    $("#setupFormContainer, .chooseMode").toggleClass("hidden");
+
   });
   $("#pvAI").click(function(){
     Game.setPlayers(Player1, Computer);
-    $("#setupFormContainer, .onlyPvp ").toggleClass("hidden");
+    $("#setupFormContainer, .onlyPvp, .chooseMode ").toggleClass("hidden");
   });
   $("#setupForm").submit(function(event){
       event.preventDefault();
@@ -110,8 +111,9 @@ $(document).ready(function(){
       Player2.setName($("#player2Name").val());
       Player1.setIcon($("input:radio[name=player1Icon]:checked").val());
       Player2.setIcon($("input:radio[name=player2Icon]:checked").val());
-      $("#setupFormContainer, #gameContainer").toggleClass("hidden");
+      $("#setupContainer, #setupFormContainer, #gameContainer").toggleClass("hidden");
       Game.startGame([$("#one"), $("#two"), $("#three"), $("#four"), $("#five"), $("#six"), $("#seven"), $("#eight"), $("#nine")]);
+      $("#activePlayer").text(Game.currentPlayer.name + "'s Turn");
   });
 
   $("#buttonReset").click(function(){
@@ -124,6 +126,7 @@ $(document).ready(function(){
       square.find("img").removeAttr("src");
       $(".square img").addClass("hidden");
     });
+    $("#activePlayer").removeClass("hidden");
     $("#winContainer, .gameBoard, .resetRow").toggleClass("hidden");
     if (Game.currentPlayer === Computer) {
       Computer.chooseSquare();
@@ -150,7 +153,7 @@ $(document).ready(function(){
       $(this).find("img").toggleClass("hidden");
       Board.setWin();
       if (Board.win) {
-        $("#winContainer, .gameBoard, .resetRow").toggleClass("hidden");
+        $("#winContainer, .gameBoard, .resetRow, #activePlayer").toggleClass("hidden");
         $("#winner").text(Game.currentPlayer.name + " WINS!!!!");
       } else {
         Game.setCurrentPlayer();
@@ -159,9 +162,9 @@ $(document).ready(function(){
           Computer.chooseSquare();
           Board.setWin();
           if (Board.win) {
-            $("#winContainer, .gameBoard, .resetRow").toggleClass("hidden");
+            $("#winContainer, .gameBoard, .resetRow, #activePlayer").toggleClass("hidden");
             $("#winner").text(Game.currentPlayer.name + " WINS!!!!");
-            Game.setCurrentPlayer(); 
+            Game.setCurrentPlayer();
           };
           Game.setCurrentPlayer();
           $("#activePlayer").text(Game.currentPlayer.name + "'s Turn");
